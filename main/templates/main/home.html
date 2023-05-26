@@ -6,6 +6,10 @@
 </head>
 <body>
 <a href="{% url 'second'%}">Second_page</a>
-    <h1>Hello world</h1>
+    <h1>Посты</h1>
+    {% for post in posts %}
+        <h3>post.title</h3>
+    {% endfor %}
+
 </body>
 </html>
