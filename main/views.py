@@ -1,9 +1,15 @@
 from django.shortcuts import render
 from .models import Post
+
+
 def home(request):
-    posts = Post.objects.all()
-    return render(request, 'main/home.html',{'posts': posts})
+    posts = Post.objects.all().order_by('created_at')
+    return render(request, 'main/home.html', {'posts': posts})
 
 
 def second_view(request):
     return render(request, 'main/second.html')
+
+
+def base_view(request):
+    return render(request, 'main/base.html')
