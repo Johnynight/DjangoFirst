@@ -1,0 +1,23 @@
+{% extends 'post_page.html' %}
+
+
+{% block title%}
+    Главная страница
+{% endblock title%}
+
+{% block content%}
+    {% if user.is_authenticated %}
+        <h1>Посты</h1>
+        {% for post in posts %}
+            <h3>{{post.title}}</h3>
+            <p>{{ post.body }}</p>
+            <p>{{ post.author }}</p>
+            <p>{{ post.draft }}</p>
+            <p>Пост изменен {{ post.changed_at }}</p>
+            <p>Пост создан {{ post.created_at }}</p>
+        {% endfor %}
+    {% else %}
+        <h1>Зарегистрируйтесь</h1>
+    {% endif %}
+{% endblock content%}
+
