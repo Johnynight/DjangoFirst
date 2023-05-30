@@ -6,10 +6,7 @@
 {% endblock title%}
 
 {% block content%}
-    <a href="{% url 'second'%}">Second_page</a>
-    <a href="{% url 'base'%}">Base_page</a>
     {% if user.is_authenticated %}
-
         <h1>Посты</h1>
         {% for post in posts %}
             <h3>{{post.title}}</h3>
