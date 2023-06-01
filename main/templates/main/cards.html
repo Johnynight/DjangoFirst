@@ -1,0 +1,41 @@
+{% extends 'post_page.html' %}
+
+{% block cards %}
+{% for post in posts %}
+       <div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text"><p>{{ post.body }}</p></p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+{% endfor %}
+{% endblock cards %}
+
+
+
+{% extends 'post_page.html' %}
+
+
+{% block title%}
+    Главная страница
+{% endblock title%}
+
+{% block content%}
+    <p>Администратор сайта: {{ user }}</p>
+    {% if user.is_authenticated %}
+        <h3>Здравствуйте {{ user.first_name }}</h3>
+        <h1>Посты</h1>
+        {% for post in posts %}
+            <a href="{% url 'post_detail' pk=post.pk %}" ><h3>{{ post.title }}</h3></a>
+            <p>{{ post.body }}</p>
+            <p>{{ post.author }}</p>
+            <p>{{ post.draft }}</p>
+            <p>Пост изменен {{ post.changed_at }}</p>
+            <p>Пост создан {{ post.created_at }}</p>
+        {% endfor %}
+    {% else %}
+        <h1>Зарегистрируйтесь</h1>
+    {% endif %}
+{% endblock content%}

@@ -1,23 +1,29 @@
 {% extends 'post_page.html' %}
 
 
-{% block title%}
-    Главная страница
-{% endblock title%}
 
-{% block content%}
+{% block content %}
+<p>Администратор сайта: {{ user }}</p>
     {% if user.is_authenticated %}
-        <h1>Посты</h1>
+    <h3>Здравствуйте {{ user.first_name }}</h3>
+        {% else %}
+         <h1>Зарегистрируйтесь</h1>
+        {% endif %}
+
+{% endblock content %}
+{% block cards %}
         {% for post in posts %}
-            <h3>{{post.title}}</h3>
-            <p>{{ post.body }}</p>
-            <p>{{ post.author }}</p>
-            <p>{{ post.draft }}</p>
-            <p>Пост изменен {{ post.changed_at }}</p>
-            <p>Пост создан {{ post.created_at }}</p>
+           <div class="card" style="width: 20rem;">
+<!--              <img src="..." class="card-img-top" alt="...">-->
+                <div class="card-body">
+                <h5 class="card-title"><p><h3>{{ post.title }}</h3></p></h5>
+                <p class="card-text"><p>{{ post.body }}</p>
+                <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-primary">Изменить пост</a>
+                </div>
+            </div>
         {% endfor %}
-    {% else %}
-        <h1>Зарегистрируйтесь</h1>
-    {% endif %}
-{% endblock content%}
+
+
+
+{% endblock cards %}
 
