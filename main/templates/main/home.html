@@ -1,13 +1,11 @@
 {% extends 'post_page.html' %}
 
-
-
 {% block content %}
 <p>Администратор сайта: {{ user }}</p>
 
-    {% if  user.is_authenticated %}
+    {% if user.is_authenticated %}
 
-    <h3>Здравствуйте {{ user.first_name }}</h3>
+    <h3>Здравствуйте {{ user }}</h3>
     <a href="{% url 'logout' %} ">Выйти</a>
         {% block cards %}
         {% for post in posts %}
