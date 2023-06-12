@@ -5,7 +5,7 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Добро пожаловать на сайт</h1>
+    <h1>Добро пожаловать на сайт {{ user.last_name }}</h1>
     <p>Вы успешно зарегистрировались. Теперь можете <a href="{% url 'login' %} ">зайти на сайт</a> </p>
 {% endblock content %}
 
