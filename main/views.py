@@ -54,8 +54,6 @@ class PostList(ListView):
             self.request.session['counter'] = 1
         return context
 
-
-
     # def render_to_response(self, context, **response_kwargs):
     #     response = super().render_to_response(context, **response_kwargs)
     #     if 'counter' in self.request.COOKIES:
