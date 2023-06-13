@@ -4,6 +4,11 @@ from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from .models import Post
 from .forms import PostForm
 from django.contrib.auth.models import User
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import PostSerializer
+
+
 
 
 # def home(request):
@@ -84,3 +89,11 @@ class PostUpdate(UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/'
+
+
+@api_view(['GET'])
+def api_posts(request):
+    if request.method == 'GET':
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
