@@ -48,9 +48,22 @@ class PostList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['admin_user'] = User.objects.get(id=1)
+        if 'counter' in self.request.session:
+            self.request.session['counter'] += 1
+        else:
+            self.request.session['counter'] = 1
         return context
-    # def get_queryset(self):
-    # return Post.objects.all().order_by("-created_at")
+
+
+
+    # def render_to_response(self, context, **response_kwargs):
+    #     response = super().render_to_response(context, **response_kwargs)
+    #     if 'counter' in self.request.COOKIES:
+    #         cnt = int(self.request.COOKIES.get('counter')) + 1
+    #         response.set_cookie('counter', cnt)
+    #     else:
+    #         response.set_cookie('counter', 1)
+    #     return response
 
 
 class PostDetail(DetailView):
