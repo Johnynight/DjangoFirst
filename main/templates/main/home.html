@@ -6,6 +6,7 @@
     {% if user.is_authenticated %}
 
     <h3>Здравствуйте {{ user.last_name }}</h3>
+    <h2><a href="{% url 'change_profile' %} ">Изменить профиль</a></h2>
     <a href="{% url 'logout' %} ">Выйти</a>
         {% block cards %}
         {% for post in posts %}
