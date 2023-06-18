@@ -142,7 +142,12 @@ def post_comment(request, post_id):
     if form.is_valid():
         comment = form.save(commit=False)
         comment.post = post
+        comment.name = request.user
         comment.save()
+
+
+
+
     return render(request, 'main/comment.html',
                   {'post': post,
                    'form': form,

@@ -39,7 +39,7 @@ class Comments(models.Model):
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,
                              related_name='comments')
-    name = models.CharField(max_length=100)
+    name = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     email = models.EmailField()
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
