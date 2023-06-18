@@ -1,14 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
-from .models import Post
-from .forms import PostForm
+from rest_framework import status
+
+from .models import Post, Comments
+from .forms import PostForm, CommentForm
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import PostSerializer
-
-
+from .serializers import PostSerializer, PostDetailSerializer
+from rest_framework.decorators import APIView
+from django.views.decorators.http import require_POST
 
 
 # def home(request):
@@ -71,6 +73,13 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
+    comments = Comments
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['form'] = CommentForm()
+        post_id = self.kwargs['pk']
+        context['comments'] = Comments.objects.filter(post = post_id)
+        return context
 
 
 class PostCreate(CreateView):
@@ -92,8 +101,49 @@ class PostUpdate(UpdateView):
 
 
 @api_view(['GET'])
-def api_posts(request):
+def api_detail_posts(request, pk):
     if request.method == 'GET':
+        posts = Post.objects.get(pk=pk)
+        serializer = PostDetailSerializer(posts)
+        return Response(serializer.data)
+
+
+# @api_view(['GET'])
+# def api_posts(request):
+#     if request.method == 'GET':
+#         posts = Post.objects.all()
+#         serializer = PostSerializer(posts, many=True)
+#         return Response(serializer.data)
+
+
+class APIpost(APIView):
+
+    def get(self, request):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
+
+    def post(self, request):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(Post,
+                             id=post_id,
+                             status=Post.Status.PUBLISHED)
+
+    comment = None
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+    return render(request, 'main/comment.html',
+                  {'post': post,
+                   'form': form,
+                   'comment': comment})
